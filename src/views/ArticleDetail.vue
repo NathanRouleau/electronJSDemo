@@ -1,12 +1,12 @@
 <template>
-  <div class="uk-section uk-flex uk-flex-center uk-flex-middle uk-background-muted" style="min-height:100vh;">
-    <div class="uk-container uk-width-2xlarge">
-      <h1 class="uk-heading-line uk-text-center uk-margin-large-bottom"><span>Détail de l'article</span></h1>
-      <div v-if="loading" class="uk-text-center uk-margin-large">
+  <div class="uk-section uk-padding-remove-top uk-flex uk-flex-center uk-flex-middle uk-background-muted" style="min-height:100vh;">
+    <div class="uk-container">
+      <h1 class="uk-heading-line uk-text-center uk-margin-medium-bottom"><span>Détail de l'article</span></h1>
+      <div v-if="loading" class="uk-text-center uk-margin-medium">
         <div data-uk-spinner="ratio:2"></div>
         <span class="uk-text-lead">Chargement...</span>
       </div>
-      <div v-if="message" class="uk-alert-primary uk-text-center uk-margin-large" data-uk-alert>
+      <div v-if="message" class="uk-alert-primary uk-text-center uk-margin-small" data-uk-alert>
         {{ message }}
       </div>
       <div v-if="article" class="uk-card uk-card-default uk-card-hover uk-card-body uk-border-rounded uk-flex uk-flex-middle uk-flex-center" style="padding:40px;">
@@ -22,24 +22,13 @@
           <p class="uk-text-lead uk-margin-bottom">{{ article.desc }}</p>
           <p class="uk-text-meta uk-margin-bottom"><span uk-icon="user"></span> {{ article.author }}</p>
           <div class="uk-flex uk-flex-center uk-flex-middle" style="gap:12px;">
-            <router-link
-              to="/articles"
-              class="uk-button uk-button-primary uk-border-pill"
-              style="min-width:140px; font-size:1.1rem;">
+            <router-link to="/articles" class="uk-button uk-button-primary uk-border-pill" style="min-width:140px; font-size:1.1rem;">
               <span uk-icon="arrow-left"></span>
             </router-link>
-            <button
-              class="uk-button uk-button-default uk-border-pill"
-              style="min-width:40px; padding:0 12px;"
-              @click="editMode = !editMode"
-              title="Modifier">
+            <button class="uk-button uk-button-default uk-border-pill" style="min-width:40px; padding:0 12px;" @click="editMode = !editMode" title="Modifier">
               <span uk-icon="pencil"></span>
             </button>
-            <button
-              class="uk-button uk-button-danger uk-border-pill"
-              style="min-width:40px; padding:0 12px;"
-              @click="deleteArticle"
-              title="Supprimer">
+            <button class="uk-button uk-button-danger uk-border-pill" style="min-width:40px; padding:0 12px;" @click="deleteArticle" title="Supprimer">
               <span uk-icon="trash"></span>
             </button>
           </div>
@@ -51,7 +40,7 @@
             </div>
             <div class="uk-margin">
               <label class="uk-form-label">Description</label>
-              <textarea v-model="edit.desc" class="uk-textarea uk-border-pill" required></textarea>
+              <textarea v-model="edit.desc" class="uk-textarea uk-border-rounded" required></textarea>
             </div>
             <div class="uk-margin">
               <label class="uk-form-label">Auteur</label>
@@ -97,7 +86,6 @@ async function fetchArticle() {
     if (json.code === "200") {
       article.value = json.data;
       message.value = json.message;
-      // Pré-remplir le formulaire d'édition
       edit.value = {
         title: json.data.title,
         desc: json.data.desc,

@@ -1,18 +1,18 @@
 <template>
-  <!--  Navigation-->
-  <ul uk-tab>
+  <!--  Navigation si connecté -->
+  <ul uk-tab v-if="isLoggedIn">
     <li v-if="!isLoggedIn">
       <router-link to="/">Login</router-link>
     </li>
     <li class="uk-active">
       <router-link to="/articles">Liste des articles</router-link>
     </li>
-    <li v-if="isLoggedIn">
+    <li>
       <a href="#" @click="logout">Deconnexion</a>
     </li>
   </ul>
 
-  <!-- Fonctionnement Vue pour en temps remplacer la page activer -->
+  <!-- Si non connecté -->
   <router-view/>
 </template>
 

@@ -1,8 +1,6 @@
 <template>
   <body class="login uk-cover-container uk-background-secondary uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-overflow-hidden uk-light" data-uk-height-viewport>
-    <!-- overlay -->
     <div class="uk-position-cover uk-overlay-primary"></div>
-    <!-- /overlay -->
     <div class="uk-position-bottom-center uk-position-small uk-visible@m uk-position-z-index">
       <span class="uk-text-small uk-text-muted">© 2019 Company Name - ...</span>
     </div>
@@ -43,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref } from 'vue';
 
 const email = ref('');
 const password = ref('');

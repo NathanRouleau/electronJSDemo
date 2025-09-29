@@ -1,6 +1,6 @@
 <template>
   <div class="uk-section uk-background-muted" style="min-height:100vh;">
-    <div class="uk-container uk-width-2xlarge">
+    <div class="uk-container">
       <h1 class="uk-heading-line uk-text-center"><span>Liste des articles</span></h1>
       <div v-if="loading" class="uk-text-center uk-margin">
         <div data-uk-spinner></div>

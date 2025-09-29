@@ -74,7 +74,6 @@ async function signup() {
     const data = await res.json();
     message.value = data.message;
     if (data.code === "200") {
-      // Optionnel : rediriger vers login après inscription
       setTimeout(() => {
         window.location.hash = '#/';
       }, 1500);

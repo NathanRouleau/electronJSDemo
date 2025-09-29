@@ -12,7 +12,7 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(), // important pour Electron (pas d'historique HTML5)
+    history: createWebHashHistory(),
     routes
 });
 
