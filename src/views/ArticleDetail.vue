@@ -62,6 +62,8 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import articleService from '../services/article-service';
+import logger from '../services/logger';
 
 const article = ref(null);
 const loading = ref(false);
@@ -81,8 +83,7 @@ async function fetchArticle() {
   loading.value = true;
   message.value = '';
   try {
-    const res = await fetch(`http://localhost:3000/articles/${route.params.id}`);
-    const json = await res.json();
+    const json = await articleService.getArticle(route.params.id);
     if (json.code === "200") {
       article.value = json.data;
       message.value = json.message;
@@ -96,6 +97,7 @@ async function fetchArticle() {
       message.value = "Erreur lors de la récupération de l'article";
     }
   } catch (err) {
+    logger.error('Erreur lors de la récupération de l\'article', err);
     message.value = "Erreur de connexion à l'API";
   }
   loading.value = false;
@@ -104,15 +106,10 @@ async function fetchArticle() {
 async function saveArticle() {
   message.value = 'Enregistrement...';
   try {
-    const res = await fetch('http://localhost:3000/articles/save', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: route.params.id,
-        ...edit.value
-      })
+    const json = await articleService.saveArticle({
+      id: route.params.id,
+      ...edit.value
     });
-    const json = await res.json();
     if (json.code === "200") {
       article.value = json.data;
       message.value = json.message;
@@ -121,6 +118,7 @@ async function saveArticle() {
       message.value = "Erreur lors de la modification";
     }
   } catch (err) {
+    logger.error('Erreur lors de la modification de l\'article', err);
     message.value = "Erreur de connexion à l'API";
   }
 }
@@ -129,10 +127,7 @@ async function deleteArticle() {
   if (!confirm("Voulez-vous vraiment supprimer cet article ?")) return;
   message.value = 'Suppression...';
   try {
-    const res = await fetch(`http://localhost:3000/articles/${route.params.id}`, {
-      method: 'DELETE'
-    });
-    const json = await res.json();
+    const json = await articleService.deleteArticle(route.params.id);
     if (json.code === "200") {
       message.value = json.message;
       setTimeout(() => {
@@ -142,6 +137,7 @@ async function deleteArticle() {
       message.value = "Erreur lors de la suppression";
     }
   } catch (err) {
+    logger.error('Erreur lors de la suppression de l\'article', err);
     message.value = "Erreur de connexion à l'API";
   }
 }

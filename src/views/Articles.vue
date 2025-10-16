@@ -27,6 +27,8 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import articleService from '../services/article-service';
+import logger from '../services/logger';
 
 const articles = ref([]);
 const loading = ref(false);
@@ -43,8 +45,7 @@ async function fetchArticles() {
   loading.value = true;
   message.value = '';
   try {
-    const res = await fetch('http://localhost:3000/articles');
-    const json = await res.json();
+    const json = await articleService.getArticles();
     if (json.code === "200") {
       articles.value = json.data;
       message.value = json.message;
@@ -52,6 +53,7 @@ async function fetchArticles() {
       message.value = "Erreur lors de la récupération des articles";
     }
   } catch (err) {
+    logger.error('Erreur lors de la récupération des articles', err);
     message.value = "Erreur de connexion à l'API";
   }
   loading.value = false;

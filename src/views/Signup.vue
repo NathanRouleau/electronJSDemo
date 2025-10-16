@@ -45,6 +45,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import articleService from '../services/article-service';
+import logger from '../services/logger';
 
 const email = ref('');
 const password = ref('');
@@ -58,20 +60,15 @@ const message = ref('');
 async function signup() {
   message.value = 'Chargement...';
   try {
-    const res = await fetch('http://localhost:3000/signup', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email.value,
-        password: password.value,
-        passwordConfirm: passwordConfirm.value,
-        pseudo: pseudo.value,
-        cityCode: cityCode.value,
-        city: city.value,
-        phone: phone.value
-      })
+    const data = await articleService.signup({
+      email: email.value,
+      password: password.value,
+      passwordConfirm: passwordConfirm.value,
+      pseudo: pseudo.value,
+      cityCode: cityCode.value,
+      city: city.value,
+      phone: phone.value
     });
-    const data = await res.json();
     message.value = data.message;
     if (data.code === "200") {
       setTimeout(() => {
@@ -79,6 +76,7 @@ async function signup() {
       }, 1500);
     }
   } catch (err) {
+    logger.error("Erreur lors de l'inscription", err);
     message.value = "Erreur lors de l'inscription";
   }
 }

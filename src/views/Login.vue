@@ -42,6 +42,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import articleService from '../services/article-service';
+import logger from '../services/logger';
 
 const email = ref('');
 const password = ref('');
@@ -50,20 +52,15 @@ const message = ref('');
 async function login() {
   message.value = 'Chargement...';
   try {
-    const res = await fetch('http://localhost:3000/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: email.value, password: password.value })
-    });
-    const data = await res.json();
+    const data = await articleService.login(email.value, password.value);
     message.value = data.message;
-
     if (data.code === "200" && data.data) {
       localStorage.setItem('token', data.data);
       window.dispatchEvent(new Event('auth-change'));
       window.location.hash = '#/articles';
     }
   } catch (err) {
+    logger.error('Erreur de connexion', err);
     message.value = "Erreur de connexion";
   }
 }
